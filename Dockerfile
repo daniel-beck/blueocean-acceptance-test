@@ -13,6 +13,15 @@ RUN apt-get install -y nodejs
 RUN apt-get install -y build-essential
 RUN apt-get install -y libssl-dev
 
+#========================================
+# Add normal user with passwordless sudo
+#========================================
+RUN useradd jenkins --shell /bin/bash --create-home \
+  && usermod -a -G sudo jenkins \
+  && echo 'ALL ALL = (ALL) NOPASSWD: ALL' >> /etc/sudoers \
+  && echo 'jenkins:secret' | chpasswd
+
+
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 
 ENV GIT_COMMITTER_EMAIL=me@hatescake.com
